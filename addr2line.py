@@ -95,12 +95,6 @@ def main():
                 print(line, end="")  # Print original line
                 converted_line = convert_address_to_offset(line, args.base)
                 addr2line_output = addr2line_proc.query(converted_line)
-
-                ### Clean up for readability
-                import os
-                script_dir = os.path.dirname(os.path.abspath(__file__))
-                addr2line_output = addr2line_output.replace(script_dir + "/", "")
-
                 print(addr2line_output, end="")  # Print addr2line output
     finally:
         # Make sure to close the process when done
