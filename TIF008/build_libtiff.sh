@@ -18,7 +18,7 @@ PROJECT_DIR="$SCRIPT_DIR/../.."
 TRY_AURORA_DIR="$SCRIPT_DIR/.."
 TRY_CLANG_DIR="$PROJECT_DIR/try-clang"
 MAGMA_DIR="$TRY_AURORA_DIR/magma-v1.2"
-EVALUATION_DIR="$PROJECT_DIR/result"
+EVALUATION_DIR="$PROJECT_DIR/evaluation"
 
 # Set up build environment
 CC="clang-16"

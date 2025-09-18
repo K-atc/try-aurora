@@ -1,0 +1,3 @@
+[submodule "magma-v1.2"]
+	path = magma-v1.2
+	url = git@github.com:K-atc/magma.git
