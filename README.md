@@ -30,4 +30,5 @@ Run
 Run work-desk (`work-desk/shell.sc magma:aurora-based`) and then run:
 1. build_libtiff.sh
 2. crash_exploration.sh
-3. rca.sh
+3. tracing.sh
+4. rca.sh

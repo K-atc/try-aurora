@@ -1,6 +1,7 @@
 import re
 import subprocess
 import os
+import select
 
 def convert_address_to_offset(line, base_addr):
     def repl(match):
@@ -37,29 +38,26 @@ class Addr2Line:
             # Read lines until we find the end marker or empty line
             # The exact behavior depends on addr2line version and options
             while True:
-                try:
-                    line_out = self.process.stdout.readline()
-                    if not line_out:
-                        break
-                    output_lines.append(line_out)
-                    
-                    # Check if this looks like the end of output for this query
-                    # This heuristic may need adjustment based on your addr2line version
-                    if line_out.strip() == '' or line_out.startswith('0x'):
-                        # Try to read one more line to see if there's more
-                        self.process.stdout.settimeout(0.1)  # Short timeout
-                        try:
-                            next_line = self.process.stdout.readline()
-                            if next_line and next_line.strip():
-                                output_lines.append(next_line)
-                            else:
-                                break
-                        except:
-                            break
-                        finally:
-                            self.process.stdout.settimeout(None)
-                except:
+                ready, _, _ = select.select([self.process.stdout], [], [], 2.0)
+                if not ready:
                     break
+
+                line_out = self.process.stdout.readline()
+                if not line_out:
+                    break
+                output_lines.append(line_out)
+                
+                # Check if this looks like the end of output for this query
+                # This heuristic may need adjustment based on your addr2line version
+                if line_out.strip() == '' or line_out.startswith('0x'):
+                    # Try to read one more line to see if there's more
+                    next_line = self.process.stdout.readline()
+                    if next_line and next_line.strip():
+                        output_lines.append(next_line)
+                    else:
+                        break
+
+
             
             result = ''.join(output_lines)
             
